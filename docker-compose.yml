@@ -1,0 +1,50 @@
+version: '1.0'
+
+services:
+  # DEVELOPMENT CONTAINER
+  dev:
+    container_name: boxful_api_dev
+    image: boxful-api-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:dev
+    ports:
+      - "${OUTER_PORT}:${APP_PORT}"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DATABASE=${DB_DATABASE}
+    networks:
+      - boxful-network
+    depends_on:
+      - mongodb
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+
+# DATABASE CONTAINER
+  mongodb:
+    image : mongo:latest
+    container_name: boxful_db
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_DATABASE}
+    networks:
+      - boxful-network
+    restart: always
+
+# NETWORKS
+networks:
+    boxful-network:
+      driver: bridge
+
+# VOLUMES
+volumes:
+  mongodb_volume:
