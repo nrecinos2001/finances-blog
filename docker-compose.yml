@@ -3,8 +3,8 @@ version: '1.0'
 services:
   # DEVELOPMENT CONTAINER
   dev:
-    container_name: boxful_api_dev
-    image: boxful-api-dev:1.0.0
+    container_name: software_ing_api
+    image: software-ing-api:1.0.0
     build:
       context: .
       target: development
@@ -18,7 +18,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
     networks:
-      - boxful-network
+      - software-ing-network
     depends_on:
       - mongodb
     volumes:
@@ -37,12 +37,15 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - MONGO_INITDB_DATABASE=${DB_DATABASE}
     networks:
-      - boxful-network
+      - software-ing-network
     restart: always
+    volumes:
+      - mongodb_volume:/data/db
+
 
 # NETWORKS
 networks:
-    boxful-network:
+    software-ing-network:
       driver: bridge
 
 # VOLUMES
