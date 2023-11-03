@@ -27,7 +27,6 @@ Once the environment variables are set, you must run:
 
 ```
 npm run start
-
 ```
 Or, if you use **Docker**, you can run
 
