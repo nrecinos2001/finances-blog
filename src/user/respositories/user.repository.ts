@@ -15,6 +15,11 @@ class UserRepository {
     });
     return newUser;
   }
+
+  async findOneById(id: string): Promise<User> {
+    const user = await PrismaInstance.user.findFirst({ where: { id } });
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();

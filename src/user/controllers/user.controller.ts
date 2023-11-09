@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UserService } from '../services/user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { IdParamDto } from '@Constants/dto';
+
+import { UserService } from '../services';
+import { CreateUserDto, UpdateUserDto } from '../dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -36,9 +38,13 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @ApiOperation({
+    description: 'Find one user by id',
+    summary: 'Use it to find a user by id',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param() idParamDto: IdParamDto) {
+    return await this.userService.findOne(idParamDto.id);
   }
 
   @Patch(':id')

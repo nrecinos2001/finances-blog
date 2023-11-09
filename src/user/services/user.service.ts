@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { User } from '@prisma/client';
 
 import envVariables from '@Config/env-variables';
 import { userRepository } from '@User/respositories';
 
 import { UpdateUserDto, CreateUserDto } from '../dto';
-import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -23,8 +23,12 @@ export class UserService {
     return await userRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string): Promise<User> {
+    const user = await userRepository.findOneById(id);
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} was not found`);
+    }
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
