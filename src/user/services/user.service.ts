@@ -5,6 +5,7 @@ import envVariables from '@Config/env-variables';
 import { userRepository } from '@User/respositories';
 
 import { UpdateUserDto, CreateUserDto } from '../dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -18,8 +19,8 @@ export class UserService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll(): Promise<User[]> {
+    return await userRepository.findAll();
   }
 
   findOne(id: number) {

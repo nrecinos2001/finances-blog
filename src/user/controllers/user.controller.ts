@@ -1,13 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('User')
-@Controller('user')
+@ApiTags('Users')
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @ApiOperation({
     description: 'Create new user',
@@ -19,6 +27,10 @@ export class UserController {
     return await this.userService.create(createUserDto);
   }
 
+  @ApiOperation({
+    description: 'Find all users',
+    summary: 'Use it to find all users',
+  })
   @Get()
   findAll() {
     return this.userService.findAll();
