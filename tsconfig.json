@@ -11,7 +11,10 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@Config/*": ["src/config/*"]
+      "@Config/*": ["src/config/*"],
+      "@User/*": ["src/user/*"],
+      "@Constants/*": ["src/constants/*"],
+      "@Common/*": ["src/commons/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

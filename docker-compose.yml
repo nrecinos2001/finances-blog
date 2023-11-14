@@ -29,7 +29,7 @@ services:
 # DATABASE CONTAINER
   mongodb:
     image : mongo:latest
-    container_name: boxful_db
+    container_name: mongodb
     ports:
       - "${DB_PORT}:${DB_PORT}"
     environment:
