@@ -1,9 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
 import { User } from '@prisma/client';
 
-import envVariables from '@Config/env-variables';
 import { userRepository } from '@User/respositories';
+import { encryptPassword } from '@Common/utils';
 
 import { UpdateUserDto, CreateUserDto } from '../dto';
 
@@ -11,8 +10,7 @@ import { UpdateUserDto, CreateUserDto } from '../dto';
 export class UserService {
   async create(createUserDto: CreateUserDto) {
     const { password } = createUserDto;
-    const { jwt } = envVariables();
-    const newPassword = await bcrypt.hash(password, Number(jwt.salt));
+    const newPassword = await encryptPassword(password);
     createUserDto.password = newPassword;
 
     const newUser = await userRepository.create(createUserDto);
@@ -31,11 +29,22 @@ export class UserService {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    // Validate existing user
+    await this.findOne(id);
+    if (updateUserDto?.password) {
+      updateUserDto.password = await encryptPassword(updateUserDto.password);
+    }
+    const updatedUser = await userRepository.updateOne(id, updateUserDto);
+    return updatedUser;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    // Validate if exists
+    const existingUser = await this.findOne(id);
+    if (existingUser.deleted) {
+      throw new NotFoundException(`User with id ${id} does not exist`);
+    }
+    return await userRepository.delete(id);
   }
 }

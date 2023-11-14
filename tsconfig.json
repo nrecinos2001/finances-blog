@@ -13,7 +13,8 @@
     "paths": {
       "@Config/*": ["src/config/*"],
       "@User/*": ["src/user/*"],
-      "@Constants/*": ["src/constants/*"]
+      "@Constants/*": ["src/constants/*"],
+      "@Common/*": ["src/commons/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

@@ -17,6 +17,7 @@ model User {
   password              String
   posts                 Post[]
   createdAt             DateTime? @default(now())
+  deleted               Boolean?
 }
 
 model Post {

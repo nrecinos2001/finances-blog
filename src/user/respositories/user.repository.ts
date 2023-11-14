@@ -1,7 +1,9 @@
 import { CreateUserDto } from '@User/dto/create-user.dto';
 import { User } from '@prisma/client';
 
-import { PrismaInstance } from 'src/constants/prisma';
+import { PrismaInstance } from '@Constants/prisma';
+
+import { UpdateUserDto } from '../dto';
 
 class UserRepository {
   async findAll(): Promise<User[]> {
@@ -19,6 +21,22 @@ class UserRepository {
   async findOneById(id: string): Promise<User> {
     const user = await PrismaInstance.user.findFirst({ where: { id } });
     return user;
+  }
+
+  async updateOne(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await PrismaInstance.user.update({
+      where: { id },
+      data: { ...updateUserDto },
+    });
+    return updatedUser;
+  }
+
+  async delete(id: string): Promise<string> {
+    await PrismaInstance.user.update({
+      where: { id },
+      data: { deleted: true },
+    });
+    return 'User was deleted';
   }
 }
 
