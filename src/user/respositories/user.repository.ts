@@ -38,6 +38,13 @@ class UserRepository {
     });
     return 'User was deleted';
   }
+
+  async findOneByEmail(email: string): Promise<User> {
+    const user = await PrismaInstance.user.findFirst({
+      where: { email },
+    });
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();
