@@ -1,1 +1,1 @@
-"start:prod": "node dist/main.js"
+"start:prod": "node dist/main"
