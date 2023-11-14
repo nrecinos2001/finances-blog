@@ -6,7 +6,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({
     description: 'Sign in',
