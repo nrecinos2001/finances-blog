@@ -13,6 +13,7 @@ async function bootstrap() {
 
   setupSwaggerDoc(app);
   app.useGlobalPipes(new ValidationPipe());
+  app.enableCors();
 
   await app.listen(port);
   console.info(`App running on port`, port);

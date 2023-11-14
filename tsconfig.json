@@ -14,7 +14,8 @@
       "@Config/*": ["src/config/*"],
       "@User/*": ["src/user/*"],
       "@Constants/*": ["src/constants/*"],
-      "@Common/*": ["src/commons/*"]
+      "@Common/*": ["src/commons/*"],
+      "@Auth/*": ["src/auth/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
