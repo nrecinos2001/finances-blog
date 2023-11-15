@@ -45,6 +45,13 @@ class UserRepository {
     });
     return user;
   }
+
+  async findOneByUsername(username: string): Promise<User> {
+    const user = await PrismaInstance.user.findFirst({
+      where: { username },
+    });
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();
