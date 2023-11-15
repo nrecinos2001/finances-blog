@@ -7,19 +7,28 @@ import { UpdateUserDto } from '../dto';
 
 class UserRepository {
   async findAll(): Promise<User[]> {
-    const users = await PrismaInstance.user.findMany();
+    const users = await PrismaInstance.user.findMany({
+      where: {
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
+    });
     return users;
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const newUser = await PrismaInstance.user.create({
-      data: createUserDto,
+      data: { ...createUserDto, deleted: false },
     });
     return newUser;
   }
 
   async findOneById(id: string): Promise<User> {
-    const user = await PrismaInstance.user.findFirst({ where: { id } });
+    const user = await PrismaInstance.user.findFirst({
+      where: {
+        id,
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
+    });
     return user;
   }
 
@@ -41,14 +50,20 @@ class UserRepository {
 
   async findOneByEmail(email: string): Promise<User> {
     const user = await PrismaInstance.user.findFirst({
-      where: { email },
+      where: {
+        email,
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
     });
     return user;
   }
 
   async findOneByUsername(username: string): Promise<User> {
     const user = await PrismaInstance.user.findFirst({
-      where: { username },
+      where: {
+        username,
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
     });
     return user;
   }
