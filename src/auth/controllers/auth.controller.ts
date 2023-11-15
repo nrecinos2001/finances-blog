@@ -10,10 +10,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({
-    description: 'Sign in',
-    summary: 'Use it to sign in',
+    description: 'Log in',
+    summary: 'Use it to log in',
   })
-  @Post('sign-in')
+  @Post('log-in')
   async signIn(@Body() signinDto: SignInDto) {
     return await this.authService.signin(signinDto);
   }
