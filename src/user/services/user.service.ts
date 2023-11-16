@@ -8,24 +8,35 @@ import { User } from '@prisma/client';
 
 import { userRepository } from '@User/respositories';
 import { encryptPassword } from '@Common/utils';
+import { ILoggedUser } from '@Common/types';
 
 import { UpdateUserDto, CreateUserDto } from '../dto';
-import { ILoggedUser } from '@Common/types';
 
 @Injectable()
 export class UserService {
-  async create(createUserDto: CreateUserDto) {
-    const { password, email, username } = createUserDto;
+  async validateEmail(email: string): Promise<User> {
     const exististByEmail = await userRepository.findOneByEmail(email);
     if (exististByEmail) {
       throw new ConflictException(`User with email ${email} already exists`);
     }
-    const exististByUsername = await userRepository.findOneByUsername(username);
-    if (exististByUsername) {
+    return exististByEmail;
+  }
+
+  async validateUsername(username: string): Promise<User> {
+    const existingByUsername = await userRepository.findOneByUsername(username);
+    if (existingByUsername) {
       throw new ConflictException(
         `User with username ${username} already exists`,
       );
     }
+    return existingByUsername;
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const { password, email, username } = createUserDto;
+    // Validate email and username
+    await this.validateEmail(email);
+    await this.validateUsername(username);
 
     const newPassword = await encryptPassword(password);
     createUserDto.password = newPassword;
@@ -56,6 +67,12 @@ export class UserService {
     await this.findOne(id);
     if (updateUserDto?.password) {
       updateUserDto.password = await encryptPassword(updateUserDto.password);
+    }
+    if (updateUserDto?.email) {
+      await this.validateEmail(updateUserDto.email);
+    }
+    if (updateUserDto?.username) {
+      await this.validateUsername(updateUserDto.username);
     }
     const updatedUser = await userRepository.updateOne(id, updateUserDto);
     return updatedUser;
