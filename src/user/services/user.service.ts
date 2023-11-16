@@ -64,15 +64,19 @@ export class UserService {
   ) {
     // Validate existing user
     if (loggedUser.id !== id) throw new ForbiddenException();
-    await this.findOne(id);
+    const currentUser = await this.findOne(id);
     if (updateUserDto?.password) {
       updateUserDto.password = await encryptPassword(updateUserDto.password);
     }
     if (updateUserDto?.email) {
-      await this.validateEmail(updateUserDto.email);
+      if (currentUser.email !== updateUserDto.email) {
+        await this.validateEmail(updateUserDto.email);
+      }
     }
     if (updateUserDto?.username) {
-      await this.validateUsername(updateUserDto.username);
+      if (currentUser.username !== updateUserDto.username) {
+        await this.validateUsername(updateUserDto.username);
+      }
     }
     const updatedUser = await userRepository.updateOne(id, updateUserDto);
     return updatedUser;
