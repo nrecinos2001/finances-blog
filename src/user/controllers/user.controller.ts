@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -15,6 +14,8 @@ import { AuthGuard } from '@Auth/guards';
 
 import { UserService } from '../services';
 import { UpdateUserDto } from '../dto';
+import { User } from '@Common/decorators';
+import { ILoggedUser } from '@Common/types';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -53,14 +54,22 @@ export class UserController {
 
   @Patch(':id')
   async update(
+    @User() loggedUser: ILoggedUser,
     @Param() idParamDto: IdParamDto,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    return await this.userService.update(idParamDto.id, updateUserDto);
+    return await this.userService.update(
+      idParamDto.id,
+      updateUserDto,
+      loggedUser,
+    );
   }
 
   @Delete(':id')
-  remove(@Param() idParamDto: IdParamDto): Promise<string> {
-    return this.userService.remove(idParamDto.id);
+  remove(
+    @Param() idParamDto: IdParamDto,
+    @User() loggedUser: ILoggedUser,
+  ): Promise<string> {
+    return this.userService.remove(idParamDto.id, loggedUser);
   }
 }

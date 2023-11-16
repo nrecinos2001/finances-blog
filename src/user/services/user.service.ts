@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -9,6 +10,7 @@ import { userRepository } from '@User/respositories';
 import { encryptPassword } from '@Common/utils';
 
 import { UpdateUserDto, CreateUserDto } from '../dto';
+import { ILoggedUser } from '@Common/types';
 
 @Injectable()
 export class UserService {
@@ -44,8 +46,13 @@ export class UserService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    loggedUser: ILoggedUser,
+  ) {
     // Validate existing user
+    if (loggedUser.id !== id) throw new ForbiddenException();
     await this.findOne(id);
     if (updateUserDto?.password) {
       updateUserDto.password = await encryptPassword(updateUserDto.password);
@@ -54,7 +61,8 @@ export class UserService {
     return updatedUser;
   }
 
-  async remove(id: string) {
+  async remove(id: string, loggedUser: ILoggedUser) {
+    if (loggedUser.id !== id) throw new ForbiddenException();
     // Validate if exists
     const existingUser = await this.findOne(id);
     if (existingUser.deleted) {
