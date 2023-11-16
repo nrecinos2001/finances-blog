@@ -16,6 +16,7 @@ import { ILoggedUser } from '@Common/types';
 
 import { PostService } from '../services/post.service';
 import { CreatePostDto, UpdatePostDto } from '../dto';
+import { IdParamDto } from '@Constants/dto';
 
 @UseGuards(AuthGuard)
 @ApiTags('Posts')
@@ -36,14 +37,22 @@ export class PostController {
     return await this.postService.create(createPostDto, loggedUser);
   }
 
+  @ApiOperation({
+    description: 'Find all posts',
+    summary: 'Use it to find all posts',
+  })
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  async findAll() {
+    return await this.postService.findAll();
   }
 
+  @ApiOperation({
+    description: 'Find a post by id',
+    summary: 'Use it to find a post by id',
+  })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id);
+  async findOne(@Param() idParamDto: IdParamDto) {
+    return await this.postService.findOne(idParamDto.id);
   }
 
   @Patch(':id')

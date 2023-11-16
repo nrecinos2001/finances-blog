@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { postRepository } from '@Post/repositories';
 import { ILoggedUser } from '@Common/types';
@@ -16,12 +16,16 @@ export class PostService {
     return newPost;
   }
 
-  findAll() {
-    return `This action returns all post`;
+  async findAll() {
+    return await postRepository.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} post`;
+  async findOne(id: string) {
+    const post = await postRepository.findOneById(id);
+    if (!post) {
+      throw new NotFoundException(`Post with id ${id} was not found`);
+    }
+    return post;
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
