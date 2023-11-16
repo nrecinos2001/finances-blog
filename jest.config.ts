@@ -20,6 +20,7 @@ module.exports = {
     '@Auth/(.*)': '<rootDir>/src/auth/$1',
     '@User/(.*)': '<rootDir>/src/user/$1',
     '@Constants/(.*)': '<rootDir>/src/constants/$1',
+    '@Post/(.*)': '<rootDir>/src/post/$1',
   },
   coverageThreshold: {
     global: {
