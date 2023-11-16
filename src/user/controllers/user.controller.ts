@@ -14,7 +14,7 @@ import { IdParamDto } from '@Constants/dto';
 import { AuthGuard } from '@Auth/guards';
 
 import { UserService } from '../services';
-import { CreateUserDto, UpdateUserDto } from '../dto';
+import { UpdateUserDto } from '../dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -23,7 +23,7 @@ import { CreateUserDto, UpdateUserDto } from '../dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOperation({
+  /* @ApiOperation({
     description: 'Create new user',
     summary: 'Use it to create a new user',
   })
@@ -31,7 +31,7 @@ export class UserController {
   async create(@Body() createUserDto: CreateUserDto) {
     console.log('LLEGO AQUI');
     return await this.userService.create(createUserDto);
-  }
+  } */
 
   @ApiOperation({
     description: 'Find all users',
