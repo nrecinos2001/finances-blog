@@ -60,8 +60,15 @@ export class PostController {
     return this.postService.update(+id, updatePostDto);
   }
 
+  @ApiOperation({
+    description: 'Delete a post by id',
+    summary: 'Use it to delete a post by id',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  async remove(
+    @Param() idParamDto: IdParamDto,
+    @User() loggedUser: ILoggedUser,
+  ): Promise<string> {
+    return await this.postService.remove(idParamDto, loggedUser);
   }
 }

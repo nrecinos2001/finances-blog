@@ -1,10 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { postRepository } from '@Post/repositories';
 import { ILoggedUser } from '@Common/types';
 import { Post } from '@prisma/client';
 
 import { CreatePostDto, UpdatePostDto } from '../dto';
+import { IdParamDto } from '@Constants/dto';
 
 @Injectable()
 export class PostService {
@@ -32,7 +37,16 @@ export class PostService {
     return `This action updates a #${id} post`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(
+    idParamDto: IdParamDto,
+    loggedUser: ILoggedUser,
+  ): Promise<string> {
+    const { id: postId } = idParamDto;
+    const existingPost = await this.findOne(postId);
+    if (existingPost.userId !== loggedUser.id) {
+      throw new ForbiddenException();
+    }
+    const deletedItem = await postRepository.deleteById(postId);
+    return deletedItem;
   }
 }

@@ -29,6 +29,11 @@ class PostRepository {
     });
     return post; // TODO: Add type for this response
   }
+
+  async deleteById(id: string): Promise<string> {
+    await PrismaInstance.post.delete({ where: { id } });
+    return `${id} deleted`;
+  }
 }
 
 export const postRepository = new PostRepository();
