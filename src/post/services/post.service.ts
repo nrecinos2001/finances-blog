@@ -3,10 +3,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Post } from '@prisma/client';
 
 import { postRepository } from '@Post/repositories';
-import { ILoggedUser } from '@Common/types';
+import { ILoggedUser, IPost } from '@Common/types';
 import { IdParamDto } from '@Constants/dto';
 
 import { CreatePostDto, UpdatePostDto } from '../dto';
@@ -16,16 +15,16 @@ export class PostService {
   async create(
     createPostDto: CreatePostDto,
     loggedUser: ILoggedUser,
-  ): Promise<Post> {
+  ): Promise<IPost> {
     const newPost = await postRepository.create(createPostDto, loggedUser.id);
     return newPost;
   }
 
-  async findAll() {
+  async findAll(): Promise<IPost[]> {
     return await postRepository.findAll();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<IPost> {
     const post = await postRepository.findOneById(id);
     if (!post) {
       throw new NotFoundException(`Post with id ${id} was not found`);
@@ -37,7 +36,7 @@ export class PostService {
     idParamDto: IdParamDto,
     updatePostDto: UpdatePostDto,
     loggedUser: ILoggedUser,
-  ) {
+  ): Promise<IPost> {
     const { id: postId } = idParamDto;
     const existingPost = await this.findOne(postId);
 
@@ -59,7 +58,7 @@ export class PostService {
 
     const updatedPost = await postRepository.update(postId, updatePostDto);
 
-    return updatePostDto;
+    return updatedPost;
   }
 
   async remove(
