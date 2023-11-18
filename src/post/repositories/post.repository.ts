@@ -1,7 +1,7 @@
 import { PrismaInstance } from '@Constants/prisma';
 import { Post } from '@prisma/client';
 
-import { CreatePostDto } from '../dto';
+import { CreatePostDto, UpdatePostDto } from '../dto';
 
 class PostRepository {
   async create(createPostDto: CreatePostDto, userId: string): Promise<Post> {
@@ -28,6 +28,20 @@ class PostRepository {
       include: { createdBy: true },
     });
     return post; // TODO: Add type for this response
+  }
+
+  async update(id: string, updatePostDto: UpdatePostDto) {
+    const updatedPost = await PrismaInstance.post.update({
+      where: { id },
+      data: updatePostDto,
+      include: { createdBy: true },
+    });
+    return updatedPost;
+  }
+
+  async deleteById(id: string): Promise<string> {
+    await PrismaInstance.post.delete({ where: { id } });
+    return `${id} deleted`;
   }
 }
 

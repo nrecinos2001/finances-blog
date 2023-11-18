@@ -23,7 +23,7 @@ import { IdParamDto } from '@Constants/dto';
 @ApiBearerAuth()
 @Controller('post')
 export class PostController {
-  constructor(private readonly postService: PostService) { }
+  constructor(private readonly postService: PostService) {}
 
   @ApiOperation({
     description: 'Create a new post',
@@ -55,13 +55,28 @@ export class PostController {
     return await this.postService.findOne(idParamDto.id);
   }
 
+  @ApiOperation({
+    description: 'Update a post by id',
+    summary: 'Use it to update a post by id',
+  })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
+  update(
+    @Param() idParamDto: IdParamDto,
+    @Body() updatePostDto: UpdatePostDto,
+    @User() loggedUser: ILoggedUser,
+  ) {
+    return this.postService.update(idParamDto, updatePostDto, loggedUser);
   }
 
+  @ApiOperation({
+    description: 'Delete a post by id',
+    summary: 'Use it to delete a post by id',
+  })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  async remove(
+    @Param() idParamDto: IdParamDto,
+    @User() loggedUser: ILoggedUser,
+  ): Promise<string> {
+    return await this.postService.remove(idParamDto, loggedUser);
   }
 }
