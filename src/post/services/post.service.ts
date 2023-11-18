@@ -3,13 +3,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Post } from '@prisma/client';
 
 import { postRepository } from '@Post/repositories';
 import { ILoggedUser } from '@Common/types';
-import { Post } from '@prisma/client';
+import { IdParamDto } from '@Constants/dto';
 
 import { CreatePostDto, UpdatePostDto } from '../dto';
-import { IdParamDto } from '@Constants/dto';
 
 @Injectable()
 export class PostService {
@@ -33,8 +33,33 @@ export class PostService {
     return post;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  async update(
+    idParamDto: IdParamDto,
+    updatePostDto: UpdatePostDto,
+    loggedUser: ILoggedUser,
+  ) {
+    const { id: postId } = idParamDto;
+    const existingPost = await this.findOne(postId);
+
+    if (existingPost.userId !== loggedUser.id) {
+      throw new ForbiddenException();
+    }
+
+    if (updatePostDto?.title) {
+      if (updatePostDto.title === existingPost.title) {
+        delete updatePostDto.title;
+      }
+    }
+
+    if (updatePostDto?.description) {
+      if (updatePostDto.description === existingPost.description) {
+        delete updatePostDto.description;
+      }
+    }
+
+    const updatedPost = await postRepository.update(postId, updatePostDto);
+
+    return updatePostDto;
   }
 
   async remove(
