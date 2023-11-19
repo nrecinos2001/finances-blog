@@ -2,6 +2,7 @@ import { PrismaInstance } from '@Constants/prisma';
 import { Post } from '@prisma/client';
 
 import { CreatePostDto, UpdatePostDto } from '../dto';
+import { IPost } from '@Common/types';
 
 class PostRepository {
   async create(createPostDto: CreatePostDto, userId: string): Promise<Post> {
@@ -14,7 +15,7 @@ class PostRepository {
     return newPost;
   }
 
-  async findAll() {
+  async findAll(): Promise<IPost[]> {
     const allPosts = await PrismaInstance.post.findMany({
       include: { createdBy: true },
       orderBy: { createdAt: 'desc' },
@@ -22,7 +23,7 @@ class PostRepository {
     return allPosts; // TODO: Add type for this response
   }
 
-  async findOneById(id: string) {
+  async findOneById(id: string): Promise<IPost> {
     const post = await PrismaInstance.post.findFirst({
       where: { id },
       include: { createdBy: true },
@@ -30,7 +31,7 @@ class PostRepository {
     return post; // TODO: Add type for this response
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto) {
+  async update(id: string, updatePostDto: UpdatePostDto): Promise<IPost> {
     const updatedPost = await PrismaInstance.post.update({
       where: { id },
       data: updatePostDto,
