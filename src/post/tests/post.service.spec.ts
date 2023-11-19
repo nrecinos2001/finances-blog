@@ -119,4 +119,32 @@ describe('PostService', () => {
       });
     });
   });
+
+  describe('remove', () => {
+    describe('When logged user is not the owner of the post', () => {
+      it('should throw a Forbidden Exception', async () => {
+        const loggedUser: ILoggedUser = { id: '12345', username: 'user' };
+        jest
+          .spyOn(postRepository, 'findOneById')
+          .mockResolvedValueOnce(postDataMock);
+        const response = service.remove({ id: '123456789' }, loggedUser);
+        await expect(response).rejects.toThrow(new ForbiddenException());
+      });
+    });
+
+    describe('When the post belongs to the logged user', () => {
+      it('should return a the deleted message', async () => {
+        const loggedUser: ILoggedUser = { id: '12345678', username: 'user' };
+        const id = '123456789';
+        jest
+          .spyOn(postRepository, 'findOneById')
+          .mockResolvedValueOnce(postDataMock);
+        jest
+          .spyOn(postRepository, 'deleteById')
+          .mockResolvedValueOnce(`${id} deleted`);
+        const response = service.remove({ id }, loggedUser);
+        await expect(response).resolves.toEqual(`${id} deleted`);
+      });
+    });
+  });
 });
