@@ -11,6 +11,7 @@ import { userDataMock } from '@User/tests/mocks/user.data.mock';
 
 describe('AuthService', () => {
   let service: AuthService;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let userService: UserService;
   let jwtService: JwtService;
 
