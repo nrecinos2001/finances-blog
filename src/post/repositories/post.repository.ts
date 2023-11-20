@@ -17,7 +17,7 @@ class PostRepository {
 
   async findAll(): Promise<IPost[]> {
     const allPosts = await PrismaInstance.post.findMany({
-      include: { createdBy: true },
+      include: { createdBy: true, receivedLkes: true },
       orderBy: { createdAt: 'desc' },
     });
     return allPosts; // TODO: Add type for this response
@@ -26,7 +26,7 @@ class PostRepository {
   async findOneById(id: string): Promise<IPost> {
     const post = await PrismaInstance.post.findFirst({
       where: { id },
-      include: { createdBy: true },
+      include: { createdBy: true, receivedLkes: true },
     });
     return post; // TODO: Add type for this response
   }
@@ -35,7 +35,7 @@ class PostRepository {
     const updatedPost = await PrismaInstance.post.update({
       where: { id },
       data: updatePostDto,
-      include: { createdBy: true },
+      include: { createdBy: true, receivedLkes: true },
     });
     return updatedPost;
   }
@@ -43,6 +43,15 @@ class PostRepository {
   async deleteById(id: string): Promise<string> {
     await PrismaInstance.post.delete({ where: { id } });
     return `${id} deleted`;
+  }
+
+  async updateLikes(id: string, likes: number): Promise<IPost> {
+    const updatedPost = await PrismaInstance.post.update({
+      where: { id },
+      data: { likes },
+      include: { createdBy: true, receivedLkes: true },
+    });
+    return updatedPost;
   }
 }
 
