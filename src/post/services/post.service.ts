@@ -7,11 +7,13 @@ import {
 import { postRepository } from '@Post/repositories';
 import { ILoggedUser, IPost } from '@Common/types';
 import { IdParamDto } from '@Constants/dto';
+import { LikesService } from '@Likes/services';
 
 import { CreatePostDto, UpdatePostDto } from '../dto';
 
 @Injectable()
 export class PostService {
+  constructor(private readonly likesService: LikesService) {}
   async create(
     createPostDto: CreatePostDto,
     loggedUser: ILoggedUser,
@@ -72,5 +74,14 @@ export class PostService {
     }
     const deletedItem = await postRepository.deleteById(postId);
     return deletedItem;
+  }
+
+  async addOrDeleteLike(loggedUser: ILoggedUser, postId: string) {
+    await this.findOne(postId);
+    const updatedLike = await this.likesService.addOrRemoveLike({
+      postId,
+      userId: loggedUser.id,
+    });
+    return updatedLike;
   }
 }

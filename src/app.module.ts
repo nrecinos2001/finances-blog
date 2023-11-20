@@ -4,9 +4,16 @@ import { ConfigModuleOptions } from '@Config/config.module';
 import { UserModule } from '@User/user.module';
 import { AuthModule } from '@Auth/auth.module';
 import { PostModule } from '@Post/post.module';
+import { LikesModule } from '@Likes/likes.module';
 
 @Module({
-  imports: [ConfigModuleOptions, UserModule, AuthModule, PostModule],
+  imports: [
+    ConfigModuleOptions,
+    UserModule,
+    AuthModule,
+    PostModule,
+    LikesModule,
+  ],
   controllers: [],
   providers: [],
 })

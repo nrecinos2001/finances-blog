@@ -8,10 +8,11 @@ export interface IPost {
   title: string;
   description: string;
   likes: number;
-  // comments              
+  // comments
   createdBy?: IUser;
   userId: string;
   createdAt: Date;
+  receivedLikes?: ILikes[];
 }
 
 export interface IUser {
@@ -22,4 +23,14 @@ export interface IUser {
   posts?: IPost[];
   createdAt: Date;
   deleted: boolean;
+  givenLikes?: ILikes[];
+}
+
+export interface ILikes {
+  id: string;
+  userId: string;
+  postId: string;
+  user?: IUser;
+  post?: IPost;
+  createdAt: Date;
 }

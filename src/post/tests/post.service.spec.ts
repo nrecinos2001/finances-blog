@@ -1,9 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostService } from '../services/post.service';
 import { postRepository } from '@Post/repositories';
-import { createPostDtoMock, postDataMock, postDataTwoMock, postsArrayDataMock, updatePostDtoMock } from '@Post/tests/mocks/posts.data.mock';
+import {
+  createPostDtoMock,
+  postDataMock,
+  postDataTwoMock,
+  postsArrayDataMock,
+  updatePostDtoMock,
+} from '@Post/tests/mocks/posts.data.mock';
 import { loggedUserMock } from '@User/tests/mocks/user.data.mock';
-import { ILoggedUser, IPost } from '@Common/types';
+import { ILoggedUser } from '@Common/types';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
 
 describe('PostService', () => {

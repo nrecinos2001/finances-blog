@@ -79,4 +79,12 @@ export class PostController {
   ): Promise<string> {
     return await this.postService.remove(idParamDto, loggedUser);
   }
+
+  @Patch('/react/:id')
+  async addOrRemoveLike(
+    @Param() idParamDto: IdParamDto,
+    @User() loggedUser: ILoggedUser,
+  ) {
+    return await this.postService.addOrDeleteLike(loggedUser, idParamDto.id);
+  }
 }
