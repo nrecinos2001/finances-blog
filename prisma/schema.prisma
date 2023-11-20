@@ -16,6 +16,7 @@ model User {
   email                 String
   password              String
   posts                 Post[]
+  givenLikes            Likes[]
   createdAt             DateTime? @default(now())
   deleted               Boolean?
 }
@@ -27,6 +28,16 @@ model Post {
   likes                 Int @default(0)
   // comments              
   createdBy             User @relation(fields: [userId], references: [id])
+  receivedLkes          Likes[]
   userId                String @db.ObjectId
   createdAt             DateTime? @default(now())
+}
+
+model Likes {
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String @db.ObjectId
+  postId                String @db.ObjectId
+  createdAt             DateTime? @default(now())
+  user                  User @relation(fields: [userId], references: [id])
+  post                  Post @relation(fields: [postId], references: [id])
 }
