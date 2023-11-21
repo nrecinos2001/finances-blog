@@ -47,6 +47,15 @@ export class UserController {
     description: 'Find one user by id',
     summary: 'Use it to find a user by id',
   })
+  @Get('me')
+  async findMyInfo(@User() loggedUser: ILoggedUser) {
+    return await this.userService.findOne(loggedUser.id);
+  }
+
+  @ApiOperation({
+    description: 'Find one user by id',
+    summary: 'Use it to find a user by id',
+  })
   @Get(':id')
   async findOne(@Param() idParamDto: IdParamDto) {
     return await this.userService.findOne(idParamDto.id);
