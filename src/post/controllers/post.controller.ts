@@ -47,6 +47,15 @@ export class PostController {
   }
 
   @ApiOperation({
+    description: 'Get all the post from a logged user',
+    summary: 'Use it to get all the post from a logged user',
+  })
+  @Get('my-posts')
+  async getMyPosts(@User() loggedUser: ILoggedUser) {
+    return await this.postService.findAllByUserId(loggedUser.id);
+  }
+
+  @ApiOperation({
     description: 'Find a post by id',
     summary: 'Use it to find a post by id',
   })

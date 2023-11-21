@@ -28,7 +28,7 @@ model Post {
   likes                 Int @default(0)
   // comments              
   createdBy             User @relation(fields: [userId], references: [id])
-  receivedLkes          Likes[]
+  receivedLikes          Likes[]
   userId                String @db.ObjectId
   createdAt             DateTime? @default(now())
 }

@@ -84,4 +84,8 @@ export class PostService {
     });
     return updatedLike;
   }
+
+  async findAllByUserId(userId: string): Promise<IPost[]> {
+    return await postRepository.findAllByUserId(userId);
+  }
 }
