@@ -17,7 +17,8 @@
       "@Common/*": ["src/commons/*"],
       "@Auth/*": ["src/auth/*"],
       "@Post/*": ["src/post/*"],
-      "@Likes/*": ["src/likes/*"]
+      "@Likes/*": ["src/likes/*"],
+      "@Comments/*": ["src/comments/*"]
     },
     "incremental": true,
     "skipLibCheck": true,

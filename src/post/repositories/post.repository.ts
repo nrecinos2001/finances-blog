@@ -17,7 +17,14 @@ class PostRepository {
 
   async findAll(): Promise<IPost[]> {
     const allPosts = await PrismaInstance.post.findMany({
-      include: { createdBy: true, receivedLikes: true },
+      include: {
+        createdBy: true,
+        receivedLikes: true,
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { username: true } } },
+        },
+      },
       orderBy: { createdAt: 'desc' },
     });
     return allPosts; // TODO: Add type for this response
@@ -26,7 +33,14 @@ class PostRepository {
   async findOneById(id: string): Promise<IPost> {
     const post = await PrismaInstance.post.findFirst({
       where: { id },
-      include: { createdBy: true, receivedLikes: true },
+      include: {
+        createdBy: true,
+        receivedLikes: true,
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { username: true } } },
+        },
+      },
     });
     return post; // TODO: Add type for this response
   }
@@ -35,7 +49,14 @@ class PostRepository {
     const updatedPost = await PrismaInstance.post.update({
       where: { id },
       data: updatePostDto,
-      include: { createdBy: true, receivedLikes: true },
+      include: {
+        createdBy: true,
+        receivedLikes: true,
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { username: true } } },
+        },
+      },
     });
     return updatedPost;
   }
@@ -49,7 +70,14 @@ class PostRepository {
     const updatedPost = await PrismaInstance.post.update({
       where: { id },
       data: { likes },
-      include: { createdBy: true, receivedLikes: true },
+      include: {
+        createdBy: true,
+        receivedLikes: true,
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { username: true } } },
+        },
+      },
     });
     return updatedPost;
   }
@@ -57,7 +85,14 @@ class PostRepository {
   async findAllByUserId(userId: string): Promise<IPost[]> {
     const posts = await PrismaInstance.post.findMany({
       where: { userId },
-      include: { createdBy: true, receivedLikes: true },
+      include: {
+        createdBy: true,
+        receivedLikes: true,
+        comments: {
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { username: true } } },
+        },
+      },
     });
     return posts;
   }

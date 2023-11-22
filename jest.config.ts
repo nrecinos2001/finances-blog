@@ -22,6 +22,7 @@ module.exports = {
     '@Constants/(.*)': '<rootDir>/src/constants/$1',
     '@Post/(.*)': '<rootDir>/src/post/$1',
     '@Likes/(.*)': '<rootDir>/src/likes/$1',
+    '@Comments/(.*)': '<rootDir>/src/comments/$1',
   },
   coverageThreshold: {
     global: {
