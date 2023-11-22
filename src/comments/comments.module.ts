@@ -11,4 +11,4 @@ import { CommentsController } from './controllers';
   providers: [CommentsService],
   exports: [CommentsService],
 })
-export class CommentsModule { }
+export class CommentsModule {}
