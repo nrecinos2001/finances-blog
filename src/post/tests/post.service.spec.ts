@@ -11,16 +11,19 @@ import {
 import { loggedUserMock } from '@User/tests/mocks/user.data.mock';
 import { ILoggedUser } from '@Common/types';
 import { ForbiddenException, NotFoundException } from '@nestjs/common';
+import { LikesService } from '@Likes/services';
 
 describe('PostService', () => {
   let service: PostService;
+  let likesService: LikesService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PostService],
+      providers: [PostService, LikesService],
     }).compile();
 
     service = module.get<PostService>(PostService);
+    likesService = module.get<LikesService>(LikesService);
   });
 
   it('should be defined', () => {
