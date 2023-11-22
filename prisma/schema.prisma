@@ -19,6 +19,7 @@ model User {
   givenLikes            Likes[]
   createdAt             DateTime? @default(now())
   deleted               Boolean?
+  comments              Comment[]
 }
 
 model Post {
@@ -26,7 +27,7 @@ model Post {
   title                 String
   description           String
   likes                 Int @default(0)
-  // comments              
+  comments              Comment[]
   createdBy             User @relation(fields: [userId], references: [id])
   receivedLikes          Likes[]
   userId                String @db.ObjectId
@@ -35,6 +36,16 @@ model Post {
 
 model Likes {
   id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String @db.ObjectId
+  postId                String @db.ObjectId
+  createdAt             DateTime? @default(now())
+  user                  User @relation(fields: [userId], references: [id])
+  post                  Post @relation(fields: [postId], references: [id])
+}
+
+model Comment {
+  id                    String  @id @default(auto()) @map("_id") @db.ObjectId
+  comment               String
   userId                String @db.ObjectId
   postId                String @db.ObjectId
   createdAt             DateTime? @default(now())
