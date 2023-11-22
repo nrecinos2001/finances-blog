@@ -1,10 +1,17 @@
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 
 import { IdParamDto } from '@Constants/dto';
 import { AuthGuard } from '@Auth/guards';
 import { User } from '@Common/decorators';
-import { ILoggedUser } from '@Common/types';
+import { ILoggedUser, IPost } from '@Common/types';
 
 import { CreateCommentDto } from '../dtos';
 import { CommentsService } from '../services';
@@ -14,7 +21,7 @@ import { CommentsService } from '../services';
 @UseGuards(AuthGuard)
 @Controller('comments')
 export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) { }
+  constructor(private readonly commentsService: CommentsService) {}
   @ApiOperation({
     description: 'Create a new comment for a post',
     summary: 'Use it to create a new comment for a post',
@@ -24,11 +31,23 @@ export class CommentsController {
     @Param() idParamDto: IdParamDto,
     @User() loggedUser: ILoggedUser,
     @Body() createCommentDto: CreateCommentDto,
-  ) {
+  ): Promise<IPost> {
     return await this.commentsService.create(
       idParamDto,
       loggedUser,
       createCommentDto,
     );
+  }
+
+  @ApiOperation({
+    description: 'Delete a comment by id',
+    summary: 'Use it to delete a comment by id',
+  })
+  @Delete(':id')
+  async delete(
+    @User() loggedUser: ILoggedUser,
+    @Param() idParamDto: IdParamDto,
+  ): Promise<IPost> {
+    return await this.commentsService.delete(idParamDto, loggedUser);
   }
 }

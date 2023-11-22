@@ -22,7 +22,7 @@ class PostRepository {
         receivedLikes: true,
         comments: {
           orderBy: { createdAt: 'desc' },
-          include: { user: { select: { username: true } } },
+          include: { user: true },
         },
       },
       orderBy: { createdAt: 'desc' },
@@ -38,7 +38,7 @@ class PostRepository {
         receivedLikes: true,
         comments: {
           orderBy: { createdAt: 'desc' },
-          include: { user: { select: { username: true } } },
+          include: { user: true },
         },
       },
     });
@@ -54,7 +54,7 @@ class PostRepository {
         receivedLikes: true,
         comments: {
           orderBy: { createdAt: 'desc' },
-          include: { user: { select: { username: true } } },
+          include: { user: true },
         },
       },
     });
@@ -75,7 +75,7 @@ class PostRepository {
         receivedLikes: true,
         comments: {
           orderBy: { createdAt: 'desc' },
-          include: { user: { select: { username: true } } },
+          include: { user: true },
         },
       },
     });
@@ -90,7 +90,7 @@ class PostRepository {
         receivedLikes: true,
         comments: {
           orderBy: { createdAt: 'desc' },
-          include: { user: { select: { username: true } } },
+          include: { user: true },
         },
       },
     });

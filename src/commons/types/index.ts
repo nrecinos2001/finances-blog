@@ -8,7 +8,7 @@ export interface IPost {
   title: string;
   description: string;
   likes: number;
-  // comments
+  comments?: IComment[];
   createdBy?: IUser;
   userId: string;
   createdAt: Date;
@@ -24,6 +24,7 @@ export interface IUser {
   createdAt: Date;
   deleted: boolean;
   givenLikes?: ILikes[];
+  comments?: IComment[];
 }
 
 export interface ILikes {
@@ -33,4 +34,14 @@ export interface ILikes {
   user?: IUser;
   post?: IPost;
   createdAt: Date;
+}
+
+export interface IComment {
+  id: string;
+  comment: string;
+  userId: string;
+  postId: string;
+  createdAt: Date;
+  user?: IUser;
+  post?: IPost;
 }
