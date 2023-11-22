@@ -26,8 +26,8 @@ class CommentsRepository {
     });
   }
 
-  async deleteById(id: string) {
-    return await PrismaInstance.comment.delete({ where: { id } });
+  async deleteById(id: string): Promise<void> {
+    await PrismaInstance.comment.delete({ where: { id } });
   }
 }
 
