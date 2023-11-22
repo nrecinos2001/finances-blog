@@ -1,5 +1,5 @@
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 
 import { IdParamDto } from '@Constants/dto';
 import { AuthGuard } from '@Auth/guards';
@@ -30,5 +30,17 @@ export class CommentsController {
       loggedUser,
       createCommentDto,
     );
+  }
+
+  @ApiOperation({
+    description: 'Delete a comment by id',
+    summary: 'Use it to delete a comment by id',
+  })
+  @Delete(':id')
+  async delete(
+    @User() loggedUser: ILoggedUser,
+    @Param() idParamDto: IdParamDto,
+  ) {
+    return await this.commentsService.delete(idParamDto, loggedUser);
   }
 }

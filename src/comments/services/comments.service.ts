@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 
 import { ILoggedUser } from '@Common/types';
 import { IdParamDto } from '@Constants/dto';
@@ -23,5 +23,16 @@ export class CommentsService {
     await commentsRepository.create(postId, userId, createCommentDto);
     const post = await this.postService.findOne(postId);
     return post;
+  }
+
+  async delete(idParamDto: IdParamDto, loggedUser: ILoggedUser) {
+    const { id: commentId } = idParamDto;
+    const { id: userId } = loggedUser;
+    const comment = await commentsRepository.findOne(commentId);
+    if (comment.userId !== userId && comment.post.createdBy.id !== userId) {
+      throw new ForbiddenException();
+    }
+    await commentsRepository.deleteById(commentId);
+    return await this.postService.findOne(comment.postId);
   }
 }
