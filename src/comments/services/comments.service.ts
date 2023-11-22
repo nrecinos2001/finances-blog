@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
 import { ILoggedUser, IPost } from '@Common/types';
 import { IdParamDto } from '@Constants/dto';
@@ -32,6 +32,9 @@ export class CommentsService {
     const { id: commentId } = idParamDto;
     const { id: userId } = loggedUser;
     const comment = await commentsRepository.findOne(commentId);
+    if (!comment) {
+      throw new NotFoundException(`Comment with id ${commentId} was not found`);
+    }
     if (comment.userId !== userId && comment.post.createdBy.id !== userId) {
       throw new ForbiddenException();
     }

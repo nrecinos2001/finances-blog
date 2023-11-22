@@ -1,6 +1,7 @@
 import { PrismaInstance } from '@Constants/prisma';
 
 import { CreateCommentDto } from '../dtos';
+import { IComment } from '@Common/types';
 
 class CommentsRepository {
   async create(
@@ -18,10 +19,10 @@ class CommentsRepository {
     return newComment;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<IComment> {
     return await PrismaInstance.comment.findFirst({
       where: { id },
-      include: { post: { include: { createdBy: { select: { id: true } } } } },
+      include: { post: { include: { createdBy: true } } },
     });
   }
 
