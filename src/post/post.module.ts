@@ -8,5 +8,6 @@ import { LikesModule } from '@Likes/likes.module';
   imports: [LikesModule],
   controllers: [PostController],
   providers: [PostService],
+  exports: [PostService],
 })
 export class PostModule {}
