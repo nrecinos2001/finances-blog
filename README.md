@@ -3,7 +3,10 @@
 This project allows users to create, read, delete and interact with posts. The idea is to share financial and technological knowledge throught posts. This API contains the necessary endpoints to achieve user interaction in the app.
 
 ## Test cases reviewed
-- [QA File](https://docs.google.com/spreadsheets/d/1t6qo_-zeYIF77DyuHBcJXOJBfEtRklSl/edit#gid=68049094)
+- 🔗 [QA File](https://docs.google.com/spreadsheets/d/1t6qo_-zeYIF77DyuHBcJXOJBfEtRklSl/edit#gid=68049094)
+
+## API Documentation
+- 🔗 [Swagger Documentation](https://finances-blog-4f53a21def45.herokuapp.com/docs)
 
 ## Tech Stack
 
