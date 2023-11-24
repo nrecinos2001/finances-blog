@@ -21,6 +21,9 @@ class LikesRepository {
       where: {
         postId,
         userId,
+        post: {
+          AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+        },
       },
       include: { post: true },
     });

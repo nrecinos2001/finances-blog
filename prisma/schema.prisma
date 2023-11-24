@@ -32,6 +32,7 @@ model Post {
   receivedLikes          Likes[]
   userId                String @db.ObjectId
   createdAt             DateTime? @default(now())
+  deleted               Boolean?
 }
 
 model Likes {

@@ -17,6 +17,9 @@ class PostRepository {
 
   async findAll(): Promise<IPost[]> {
     const allPosts = await PrismaInstance.post.findMany({
+      where: {
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
       include: {
         createdBy: true,
         receivedLikes: true,
@@ -32,7 +35,10 @@ class PostRepository {
 
   async findOneById(id: string): Promise<IPost> {
     const post = await PrismaInstance.post.findFirst({
-      where: { id },
+      where: {
+        id,
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
       include: {
         createdBy: true,
         receivedLikes: true,
@@ -62,7 +68,10 @@ class PostRepository {
   }
 
   async deleteById(id: string): Promise<string> {
-    await PrismaInstance.post.delete({ where: { id } });
+    await PrismaInstance.post.update({
+      where: { id },
+      data: { deleted: true },
+    });
     return `${id} deleted`;
   }
 
@@ -84,7 +93,10 @@ class PostRepository {
 
   async findAllByUserId(userId: string): Promise<IPost[]> {
     const posts = await PrismaInstance.post.findMany({
-      where: { userId },
+      where: {
+        userId,
+        AND: { OR: [{ deleted: false }, { deleted: { isSet: false } }] },
+      },
       include: {
         createdBy: true,
         receivedLikes: true,
